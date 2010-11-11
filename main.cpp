@@ -195,9 +195,10 @@ node cGetByN(string N){
 
 void Menu()
 {
-	cout<<" Choose: \n PC(N) for printing column\n WC(N) for writing column to a file\n TC (N) text; for printing text\n" <<endl;
+	cout<<" Choose: \n PC(N) for printing column\n PF(N)text; for printing text\n EX() for exit\n" <<endl;
 	string cmd,body, arg, text;
-	char* tmp="Result.txt";
+	char* tmp=new char[100];
+	//tmp="Result.txt";
 	ofstream myfile;
 	while(1)
 	{
@@ -206,22 +207,26 @@ void Menu()
 		/////////////////////////
 		while(isspace(cmd[i]))i++;
 		body=get_string(cmd,i,'(');i++;
-		arg=get_string(cmd,i,')');
-		cout<<"B: "<<body<<" A: "<<arg<<endl;
 		////////////////////////////////////
+		if(body=="EX") exit(0);
+		if(body=="CF")
+		{
+			cout<<" Enter the filename: "<<endl;
+			cin>>tmp;
+			cout<<" Got it."<<endl;
+		}
+		/////////////////////////////////
+		else
+			arg=get_string(cmd,i,')');
+		//cout<<"B: "<<body<<" A: "<<arg<<endl;
+		////////////////////////////////////
+		
 		if(body=="PC")
 			if(arg=="A")
 				cout<<cPrinter();
 			else
-			{
 				cout<<nPrinter(cGetByN(arg));
-			}
-		if(body=="WC")
-			if(arg=="A")
-			{myfile.open(tmp); myfile<<cPrinter();myfile.close();}
-			else
-			{myfile.open(tmp); myfile<<nPrinter(cGetByN(arg)); myfile.close();}
-		if(body=="TC")
+		if(body=="PF")
 			{
 				myfile.open(tmp);
 				i++;
@@ -259,9 +264,7 @@ int main()
 {
 
 col parser;
-
 parser.Menu();
-
 
 // main code:
  
