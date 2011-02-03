@@ -107,20 +107,17 @@ col(char* F)
 	node temp;//additional column
     string line;//string from file
 	bool flag=false;//first string or not
-	//ifstream myfile ("Example.txt");//reading file
 	ifstream myfile(F);
-	 int c=0;//column's counter
-  //columns=new vector<node>();
+	 int c=0;
 if (myfile.is_open())
   {
 while ( myfile.good() )
 {
 			     getline (myfile,line);
-					//myfile>> line;
 				 cout << line << endl;
 				
 				 if(!flag)
-				 { //first string:
+				 { 
 
 					 for(int i=0;i<line.length()-1;i++)
 					 {
@@ -128,7 +125,6 @@ while ( myfile.good() )
 			
 						temp.name=get_string(line,i,'(');
 						i=wait_for_char(line,i,')');i--;
-					//cout<<line[i]<<endl;
 						int h=0;
 						switch (line[i-1])
 						{
@@ -142,27 +138,21 @@ while ( myfile.good() )
 					flag=true;
 					 counter=c;
 				}else{
-	//////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
-	//cout<<endl<<"col. counter: "<<counter<<endl;
+
 	for(int u=0;u<counter;u++)
 	{
 		//cout<<"col: "<<u<<"  type:"<<columns[u].type<<endl;
 	}
 	int i=0;
 	c=0;
-	//getline (myfile,line);
-		//myfile>> line;
-	//cout << line << endl;
 
 	
 
 	while(i<line.length())
-	{	//cout<<endl<<"line inforemation: "<<line<<endl;
+	{	
 	line=line+" ";
 	
 	while(!isdigit(line[i])){i++;}
-	//cout<<"counter: "<<c<<" col type: "<<columns[c].type<<endl;
 		switch(columns[c].type)
 		{
 		case 0:
@@ -190,27 +180,14 @@ if(c==counter)break;
   }
  }
 }
-    myfile.close();//cout<<"lol";
+    myfile.close();
   }
-  else cout << "Unable to open file"; 
- // cout<<"here we are: "<<endl;
+  else printf( gettext("Unable to open file")); 
 
-
- // for(int y=0;y<columns.size();y++)
-//{
-	//switch(columns[y].type)
-	//{
-	//case 0:{for(int h=0;h<columns[y].val0.size();h++)cout<<columns[y].val0[h]<<" from "<<columns[y].name<<endl;break;}
-	//case 1:{for(int h=0;h<columns[y].val1.size();h++)cout<<columns[y].val1[h]<<" from "<<columns[y].name<<endl;break;}
-	//case 2:{for(int h=0;h<columns[y].val2 .size();h++)cout<<columns[y].val2[h]<<" from "<<columns[y].name<<endl;break;}
-	
-	//}
-
-//}
 		}
 
-///////////////////////////////////////////////////////////////////////////////////////
-string nPrinter(node N) //NOT_USED//
+
+string nPrinter(node N) 
 {
         ostringstream out;
         out<<"\n Name: "<<N.name<<" Type: "<<N.type<<endl;
@@ -280,23 +257,21 @@ node cGetByN(string N)
 	}
 	node n;
 	n.type=-1;
-        cout<<"THERE IS NO COLUMN WITH SUCH NAME"<<endl;
+        printf( gettext("THERE IS NO COLUMN WITH SUCH NAME"));
 	return n;
 }
 
 ///////////////////////////////////////////////////////////////////////
 
 
-void Menu() //ÃÕŒ√Œ_»«¬–¿Ÿ≈Õ»…//
+void Menu() 
 {
-        printf( gettext( "text" ) );
-	//cout<<" Choose:\n CF(Filename.txt) for choosing file \n PC(N) for printing column called N\n PF(N) for the same in file\n PCN(N) and PFN(N) for the same with number\n Ctrl+C for exit\n" <<endl;
+        printf( gettext( "Choose:\n CF(Filename.txt) for choosing input file \n PC(N) for ptinting column named N \n PF(N) for printing column named N in file\n PCN(N) and PFN(N) for the same with column number\n Ctrl+C for exit" ) );
 	string cmd,body, text;
 	int i, p, place;
 	vector<string> args;
 	char* tmp=new char[100];
 	vector<node> C;
-	//tmp="Result.txt";
 	ofstream myfile;
 	while(1)
 	{
@@ -307,7 +282,6 @@ void Menu() //ÃÕŒ√Œ_»«¬–¿Ÿ≈Õ»…//
 		body=get_string(cmd,i,'(');i++;
 		///CMDS_WITHOUT_ARGS///
                 if(body=="EX") 
-		  //exit(0)
 		;
                 ///GETTING_ARGS///
                 else
@@ -337,25 +311,21 @@ void Menu() //ÃÕŒ√Œ_»«¬–¿Ÿ≈Õ»…//
 			///CHECKING_FILE///
 			myfile.open(tmp);
 			if(myfile.is_open())
-				cout<<tmp<<" Got it."<<endl;
+				cout<<tmp<<endl;
 			else
-				cout<<"FILE ERROR"<<endl;
+				printf( gettext("FILE ERROR"));
 			myfile.close();
 		}
 		if(body=="PC"||body=="PCN"||body=="PF"||body=="PFN")
                 {	///ALL///cout<<"err5"<<endl;
-                    //cout<<"err6"<<endl;
 
-                    //-----------------------------------
                     if(args[0]=="A")
                         {
-                       // cout<<"err7"<<endl;
 				if(body=="PC"||body=="PCN")
                                   {
-                                    //cout<<"err1"<<endl;
                                     cout<<cPrinter(columns);}
 				else
-                                {//cout<<"err2"<<endl;
+                                {
 					myfile.open(tmp);
 					myfile<<cPrinter(columns);
 					myfile.close();
@@ -365,15 +335,13 @@ void Menu() //ÃÕŒ√Œ_»«¬–¿Ÿ≈Õ»…//
 			///SOME///
 			else
 
-                            //----------------------------------------------------------------------------------------
 
                             if(body=="PC"||body=="PF")
-                                {//cout<<"err8"<<endl;//drop here!
+                                {
 					for(int j=0; j<args.size(); j++)
-                            {//cout<<"err10"<<endl;
-                                            if(cGetByN(args[j]).type!=(-1))//DROP HERE!!!!  err0 not printed... but why? it's just like while(1) 0_0... because of cGetByn
-                                            {//cout<<"err0"<<endl;
-											C.push_back(cGetByN(args[j]));}}
+                            {
+                                            if(cGetByN(args[j]).type!=(-1))
+                                            {C.push_back(cGetByN(args[j]));}}
 					if(body=="PC")
 						cout<<cPrinter(C);
 					else
@@ -385,7 +353,7 @@ void Menu() //ÃÕŒ√Œ_»«¬–¿Ÿ≈Õ»…//
 					C.clear();
 				}
 				else
-                                {//cout<<"err9"<<endl;
+                                {
 					for(int j=0; j<args.size(); j++)
 						if(str_to_int(args[j],0)<columns.size())//no fail
 							C.push_back(columns[str_to_int(args[j],0)]);
@@ -432,53 +400,7 @@ int main()
 	parser.Menu();
 
 
-		/*
-		
-////<<"\n\n\n\n";//
-		cout<<endl<<"here:!";
-for(int y=0;y<parser.counter;y++)
-{
-	cout<<' '<<parser.columns[y].name;
-}
 
-*/
-/*
-for(int y=0;y<parser.columns.size();y++)
-{
-	switch(parser.columns[y].type)
-	{
-	case 0:{for(int h=0;h<2;h++)cout<<parser.columns[y].val0[h]<<" from "<<parser.columns[y].name<<endl;break;}
-	case 1:{for(int h=0;h<2;h++)cout<<parser.columns[y].val1[h]<<" from "<<parser.columns[y].name<<endl;break;}
-	case 2:{for(int h=0;h<2;h++)cout<<parser.columns[y].val2[h]<<" from "<<parser.columns[y].name<<endl;break;}
-	
-	}
-}
-*/
-
-
-  // main code:
-  
-/*
-*/
-
-
-/*
-output:
-
- ofstream myfile;
- myfile.open ("example.txt");
- myfile << "Writing this to a file.\n";
- myfile.close();
-
-*/
-
-	/*
-cout<<"Enter the filename:"<<endl;
-char * filename=new char[100];
-cin>>filename;
-col parser(filename);
-parser.Menu();
-*/
 
 
 
