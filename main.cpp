@@ -12,35 +12,31 @@
 using namespace std;
 
 
-
-		int char_to_int(char a)
-        {	return a - '0';
-        }
+///////////FOR_PARSING//////////////////
+	int char_to_int(char a)
+	{return a - '0';}
 		
-		int str_to_int(string b, int w)//unstable function - last string symbol crash
-		{
-			int k=0;
-			
-			for(;isdigit(b[w]);w++)
-						{
-				k=k*10+char_to_int(b[w]);
-				}
-			return k;
-		}
+	int str_to_int(string b, int w)
+	{
+		int k=0;
+		for(;isdigit(b[w]);w++)
+		{k=k*10+char_to_int(b[w]);}
+		return k;
+	}
 
-		int wait_for_char(string b, int w, char q)//пробегает до требуемого символа и останавливается ЗА ним
+	int wait_for_char(string b, int w, char q)
         {
             while (b[w] != q) w++; w++;
             return w;
         }
 
-		int wait_for_digit(string b, int w)//пробегает до цифры и останавливается на ней
+	int wait_for_digit(string b, int w)
         {
             while (!isdigit(b[w])) w++;
             return w;
         }
 
-		double string_to_double(string b, int w)
+	double string_to_double(string b, int w)
         {
             double t = 0.0;
             while (b[w] != '.')
@@ -53,141 +49,125 @@ using namespace std;
                 w++;flag=flag*0.1;
             }
             return t;
-       
         }
 
-	     string get_string(string b, int &w, char k)//copy string until k
+	string get_string(string b, int &w, char k)
         {
-            string end = "";
-           
-			while (b[w] != k)
-            {
-                end = end + b[w]; w++;
-            }
-
-			return end;}
+		string end = "";
+		while (b[w] != k)
+		{end = end + b[w]; w++;}
+		return end;
+	}
 		 
-     int endl(string b, int w)//доходит до конца строки и пропускает нижележащие комментарии
+     int endl(string b, int w)
         {
             w = wait_for_char(b, w, '\n');
             while (b[w] == '#') wait_for_char(b, w, '\n');
             return w;
         }
 
-       bool contain(string b, string a, int w)//a in b from w-place until ' ' or ' . ' or ' : '
+       bool contain(string b, string a, int w)
         {
             for (; !isspace(b[w]) || b[w] != '.' || b[w] != ':'; w++) if (a[w] != b[w]) return false;
             return true;
         }
-
-	   class col
-{public:	
+///////////////////////////////////////////
+class col
+{
+	public:	
 	int counter;
 	struct node
 
-{
-	string name;
-	int type;
-	/*
-	0-int;
-	1-unsigned int
-	2-double
-	*/
-    vector<int> val0;
-	vector<unsigned int> val1;
-	vector<double> val2;
-};
+	{
+		string name;
+		int type;
+		/*
+		0-int;
+		1-unsigned int
+		2-double
+		*/
+		vector<int> val0;
+		vector<unsigned int> val1;
+		vector<double> val2;
+	};
 
 	vector<node> columns;
 
-
-
-col(char* F)
-{
-	node temp;//additional column
-    string line;//string from file
-	bool flag=false;//first string or not
-	ifstream myfile(F);
-	 int c=0;
-if (myfile.is_open())
-  {
-while ( myfile.good() )
-{
-			     getline (myfile,line);
-				 cout << line << endl;
-				
-				 if(!flag)
-				 { 
-
-					 for(int i=0;i<line.length()-1;i++)
-					 {
-						while(isspace(line[i]))i++;
-			
-						temp.name=get_string(line,i,'(');
-						i=wait_for_char(line,i,')');i--;
-						int h=0;
-						switch (line[i-1])
-						{
-							case 'i':{temp.type =0;break;}
-							case 'u':{temp.type =1;break;}
-							case 'd':{temp.type =2;break;}
-						}
-						columns.push_back(temp);
-						c++;
-					 }
-					flag=true;
-					 counter=c;
-				}else{
-
-	for(int u=0;u<counter;u++)
+	col(char* F)
 	{
-		//cout<<"col: "<<u<<"  type:"<<columns[u].type<<endl;
-	}
-	int i=0;
-	c=0;
-
-	
-
-	while(i<line.length())
-	{	
-	line=line+" ";
-	
-	while(!isdigit(line[i])){i++;}
-		switch(columns[c].type)
+		node temp;//additional column
+		string line;//string from file
+		bool flag=false;//first string or not
+		ifstream myfile(F);
+		int c=0;
+		if (myfile.is_open())
 		{
-		case 0:
-			{int trig=1;
-			int iddqd = str_to_int(line,i);if(line[i-1]=='-')trig=-1;
-			
-			columns[c].val0.push_back(trig*str_to_int(line,i));
-
-				break;
+		while ( myfile.good() )
+		{
+			getline (myfile,line);
+			cout << line << endl;	
+			if(!flag)
+			{ 
+				for(int i=0;i<line.length()-1;i++)
+				{
+					while(isspace(line[i]))i++;
+					temp.name=get_string(line,i,'(');
+					i=wait_for_char(line,i,')');i--;
+					int h=0;
+					switch (line[i-1])
+					{
+						case 'i':{temp.type =0;break;}
+						case 'u':{temp.type =1;break;}
+						case 'd':{temp.type =2;break;}
+					}
+					columns.push_back(temp);
+					c++;
+				}
+				flag=true;
+				counter=c;
 			}
-		
-		case 1:
-			{	columns[c].val0.push_back(str_to_int(line,i));
-				break;
-			}
-			
-		case 2:
+			else
 			{
-			columns[c].val2.push_back(string_to_double(line,i));
-				break;
+				for(int u=0;u<counter;u++)
+				{/*cout<<"col: "<<u<<"  type:"<<columns[u].type<<endl;*/}
+				int i=0;
+				c=0;
+				while(i<line.length())
+				{	
+					line=line+" ";
+					while(!isdigit(line[i])){i++;}
+					switch(columns[c].type)
+					{
+					case 0:
+					{
+						int trig=1;
+						int iddqd = str_to_int(line,i);if(line[i-1]=='-')trig=-1;
+						columns[c].val0.push_back(trig*str_to_int(line,i));
+						break;
+					}
+					case 1:
+					{	
+						columns[c].val0.push_back(str_to_int(line,i));
+						break;
+					}
+					case 2:
+					{
+						columns[c].val2.push_back(string_to_double(line,i));
+						break;
+					}
+					}	
+					c++;
+					if(c==counter)break;
+				}
 			}
-	}
-c++;
-if(c==counter)break;
-  }
- }
-}
-    myfile.close();
-  }
-  else printf( gettext("Unable to open file")); 
-
 		}
+		myfile.close();
+	}
+	else printf( gettext("Unable to open file")); 
+}
 
-
-string nPrinter(node N) 
+/////////////////////////////////////////////
+string nPrinter(node N) ///NOT_USED///FOR_DEBUG///
 {
         ostringstream out;
         out<<"\n Name: "<<N.name<<" Type: "<<N.type<<endl;
@@ -252,8 +232,7 @@ node cGetByN(string N)
         for(int i=0; i<columns.size(); i++)
 	{
 		if(columns[i].name==N)
-            {
-                    return columns[i];}
+		{return columns[i];}
 	}
 	node n;
 	n.type=-1;
@@ -318,8 +297,7 @@ void Menu()
 		}
 		if(body=="PC"||body=="PCN"||body=="PF"||body=="PFN")
                 {	///ALL///cout<<"err5"<<endl;
-
-                    if(args[0]=="A")
+			if(args[0]=="A")
                         {
 				if(body=="PC"||body=="PCN")
                                   {
@@ -333,30 +311,29 @@ void Menu()
 
 			}
 			///SOME///
-			else
-
-
-                            if(body=="PC"||body=="PF")
-                                {
-					for(int j=0; j<args.size(); j++)
-                            {
-                                            if(cGetByN(args[j]).type!=(-1))
-                                            {C.push_back(cGetByN(args[j]));}}
-					if(body=="PC")
-						cout<<cPrinter(C);
-					else
-					{
-						myfile.open(tmp);
-						myfile<<cPrinter(C);
-						myfile.close();
-					}
-					C.clear();
+		else
+			if(body=="PC"||body=="PF")
+                        {
+				for(int j=0; j<args.size(); j++)
+				{
+                                        if(cGetByN(args[j]).type!=(-1))
+                                        {C.push_back(cGetByN(args[j]));}
 				}
+				if(body=="PC")
+					cout<<cPrinter(C);
 				else
-                                {
-					for(int j=0; j<args.size(); j++)
-						if(str_to_int(args[j],0)<columns.size())//no fail
-							C.push_back(columns[str_to_int(args[j],0)]);
+				{
+					myfile.open(tmp);
+					myfile<<cPrinter(C);
+					myfile.close();
+				}
+					C.clear();
+			}
+			else
+                        {
+				for(int j=0; j<args.size(); j++)
+					if(str_to_int(args[j],0)<columns.size())//no fail
+						C.push_back(columns[str_to_int(args[j],0)]);
 					if(body=="PCN")
 						cout<<cPrinter(C);
 					else
@@ -366,17 +343,10 @@ void Menu()
 						myfile.close();
 					}
 					C.clear();
-				}
-                            }
-            }
+			}
+                }
+        }
 }
-
-
-
-
-
-
-
 
 };
 
@@ -398,12 +368,6 @@ int main()
 	col parser(tmp);
 		
 	parser.Menu();
-
-
-
-
-
-
 
 
 return 0;
