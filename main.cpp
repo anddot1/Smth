@@ -192,7 +192,7 @@ if(c==counter)break;
 }
     myfile.close();//cout<<"lol";
   }
-  else cout << "Unable to open file"; 
+  else printf( gettext("Unable to open file")); 
  // cout<<"here we are: "<<endl;
 
 
@@ -280,7 +280,7 @@ node cGetByN(string N)
 	}
 	node n;
 	n.type=-1;
-        cout<<"THERE IS NO COLUMN WITH SUCH NAME"<<endl;
+        printf( gettext("THERE IS NO COLUMN WITH SUCH NAME"));
 	return n;
 }
 
@@ -289,7 +289,7 @@ node cGetByN(string N)
 
 void Menu() //ÌÍÎÃÎ_ÈÇÂÐÀÙÅÍÈÉ//
 {
-        printf( gettext( "text" ) );
+        printf( gettext( "Choose:\n CF(Filename.txt) for choosing input file \n PC(N) for ptinting column named N \n PF(N) for printing column named N in file\n PCN(N) and PFN(N) for the same with column number\n Ctrl+C for exit" ) );
 	//cout<<" Choose:\n CF(Filename.txt) for choosing file \n PC(N) for printing column called N\n PF(N) for the same in file\n PCN(N) and PFN(N) for the same with number\n Ctrl+C for exit\n" <<endl;
 	string cmd,body, text;
 	int i, p, place;
@@ -337,9 +337,9 @@ void Menu() //ÌÍÎÃÎ_ÈÇÂÐÀÙÅÍÈÉ//
 			///CHECKING_FILE///
 			myfile.open(tmp);
 			if(myfile.is_open())
-				cout<<tmp<<" Got it."<<endl;
+				cout<<tmp<<endl;
 			else
-				cout<<"FILE ERROR"<<endl;
+				printf( gettext("FILE ERROR"));
 			myfile.close();
 		}
 		if(body=="PC"||body=="PCN"||body=="PF"||body=="PFN")
